@@ -1,0 +1,100 @@
+name: Build Proton
+on:
+  push:
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: ${{ matrix.os }} Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Install native dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update; sudo apt-get install libusb-1.0-0-dev libudev-dev
+
+      - name: Setup MSBuild.exe
+        if: matrix.os == 'windows-latest'
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Setup Cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ matrix.os }}-deps
+
+      - name: Dependencies
+        run: | 
+            yarn 
+            cd node_modules/turtlecoin-utils
+            echo '{"coinUnitPlaces":2,"addressPrefix":4419,"keccakIterations":1,"defaultNetworkFee":10,"fusionMinInputCount":12,"fusionMinInOutCountRatio":4,"mmMiningBlockVersion":2,"maximumOutputAmount":40000000000,"maximumOutputsPerTransaction":90,"maximumExtraSize":1024,"activateFeePerByteTransactions":true,"feePerByte":0.1,"feePerByteChunkSize":256}' > config.json
+            cd ../../ 
+            cd node_modules/turtlecoin-wallet-backend/dist/lib
+            echo '"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const MixinLimits_1=require("./MixinLimits"),version=require("../../package.json").version;class Config{constructor(){this.decimalPlaces=2,this.addressPrefix=4419,this.requestTimeout=1e4,this.blockTargetTime=60,this.syncThreadInterval=10,this.daemonUpdateInterval=1e4,this.lockedTransactionsCheckInterval=3e4,this.blocksPerTick=1,this.ticker="ZTC",this.scanCoinbaseTransactions=!1,this.minimumFee=10,this.feePerByteChunkSize=256,this.minimumFeePerByte=26/this.feePerByteChunkSize,this.mixinLimits=new MixinLimits_1.MixinLimits([new MixinLimits_1.MixinLimit(0,0,3,3),new MixinLimits_1.MixinLimit(11e3,3),new MixinLimits_1.MixinLimit(15e4,3)],3),this.standardAddressLength=97,this.integratedAddressLength=185,this.underivePublicKey=void 0,this.derivePublicKey=void 0,this.deriveSecretKey=void 0,this.generateKeyImage=void 0,this.secretKeyToPublicKey=void 0,this.cnFastHash=void 0,this.generateRingSignatures=void 0,this.checkRingSignatures=void 0,this.generateKeyDerivation=void 0,this.blockStoreMemoryLimit=52428800,this.blocksPerDaemonRequest=100,this.maxLastFetchedBlockInterval=180,this.maxLastUpdatedNetworkHeightInterval=180,this.maxLastUpdatedLocalHeightInterval=180,this.customUserAgentString=`${this.ticker.toLowerCase()}-wallet-backend-${version}`,this.customRequestOptions={}}}function MergeConfig(e,i=new Config){const t=Object.create(Object.getPrototypeOf(i),Object.getOwnPropertyDescriptors(i));if(!e)return t;for(const[i,s]of Object.entries(e))t[i]=s;return t}exports.Config=Config,exports.MergeConfig=MergeConfig;' > Config.js
+            cd ../../../../ 
+
+      - name: Build
+        run: yarn package
+
+      - name: Prepare to Deploy
+        id: before_deploy
+        shell: bash
+        run: |
+          rm -rf ./release/*.blockmap
+          rm -rf ./release/*.zip
+          rm -rf ./release/*-unpacked
+          rm -rf ./release/mac
+          rm -rf ./release/*.yml
+
+          export FILE_NAME=(release/TurtleCoin*)
+          echo ::set-output name=file_name::${FILE_NAME:8}
+
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            export DEB_NAME=(release/turtlecoin-*)
+            echo ::set-output name=deb_name::${DEB_NAME:8}
+          fi
+
+      - name: Print Checksums
+        id: additional_deploy
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            shasum -a 256 ./release/*
+          else
+            sha256sum release/*
+          fi
+
+      - name: Store Build Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ steps.before_deploy.outputs.file_name }}
+          path: ./release/${{ steps.before_deploy.outputs.file_name }}
+
+      - name: Store Additional Build Artifact
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ steps.before_deploy.outputs.deb_name }}
+          path: ./release/${{ steps.before_deploy.outputs.deb_name }}
+
+      - name: Upload Artifact to GH Release
+        if: github.event_name == 'release' && github.repository == 'turtlecoin/turtle-wallet-proton'
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./release/${{ steps.before_deploy.outputs.file_name }}
+          asset_name: ${{ steps.before_deploy.outputs.file_name }}
+          asset_content_type: application/octet-stream
