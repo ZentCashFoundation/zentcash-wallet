@@ -24,14 +24,14 @@ const configure = {
     walletSaveFrequency: 60 * 1000,
 
     /**
-     * The amount of decimal places your coin has, e.g. TurtleCoin has two
+     * The amount of decimal places your coin has, e.g. Zent Cash has two
      * decimals
      */
     decimalPlaces: 2,
 
     /**
      * The address prefix your coin uses - you can find this in CryptoNoteConfig.h.
-     * In TurtleCoin, this converts to TRTL
+     * In Zent Cash, this converts to Ze
      */
     addressPrefix: 4419,
 
@@ -68,7 +68,7 @@ const configure = {
     blocksPerTick: 100,
 
     /**
-     * Your coins 'ticker', generally used to refer to the coin, i.e. 123 TRTL
+     * Your coins 'ticker', generally used to refer to the coin, i.e. 123 ZTC
      */
     ticker: "ZTC",
 
@@ -159,13 +159,9 @@ const configure = {
      * it to support, you're going to have to modify the code in Currency.js.
      */
     priceApiLink: "https://api.coingecko.com/api/v3/simple/price",
+    
     coinNameCoingecko: "zent-cash",
-
-    /**
-     * A url to fetch node info from. Should follow the turtlepay format
-     * detailed here: https://docs.turtlepay.io/blockapi/
-     */
-
+    
     DefaultDaemonRPCPort: "21698",
 
     nodeListURL: "https://raw.githubusercontent.com/ZentCashDevelopers/zentcash-mobile-nodes-json/master/zentcash-mobile-nodes.json",
