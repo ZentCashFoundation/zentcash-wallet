@@ -7,7 +7,7 @@
 
 ### Master Build Status
 
-![Master Build Status](https://github.com/ZentCashFoundation/zentcash-wallet/workflows/Build%20Zent%20Cash%20Wallet/badge.svg?branch=master)
+![Master Build Status](https://github.com/ZentCashFoundation/zentcash-wallet/workflows/Build%20Zent%20Cash%20Wallet/badge.svg?branch=main)
 
 ### Development Build Status
 
