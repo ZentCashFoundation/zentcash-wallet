@@ -216,7 +216,7 @@
         "core-js": "2",
         "csv-writer": "^1.4.0",
         "devtron": "^1.4.0",
-        "electron-context-menu": "https://github.com/ExtraHash/electron-context-menu.git",
+        "electron-context-menu": "0.16.0",
         "electron-debug": "^2.1.0",
         "electron-is-dev": "^1.1.0",
         "electron-log": "^3.0.4",
