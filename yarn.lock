@@ -4783,9 +4783,10 @@ electron-chromedriver@~3.0.0:
     electron-download "^4.1.0"
     extract-zip "^1.6.5"
 
-"electron-context-menu@https://github.com/ExtraHash/electron-context-menu.git":
-  version "0.15.0"
-  resolved "https://github.com/ExtraHash/electron-context-menu.git#5877d2470a2549d0a2656150ffbe73b2a720cb4f"
+electron-context-menu@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.16.0.tgz#4f53b4640e321f536415a625505a908518f5dff7"
+  integrity sha512-lGr1/nRlNGmU8THc0hl2dYEB5bwXJpsi7vCjjsnsNGJKPZZLY8nHY3xvtjdtwKocErvp1h8wUb19moWenzoGPw==
   dependencies:
     cli-truncate "^2.0.0"
     electron-dl "^1.2.0"
