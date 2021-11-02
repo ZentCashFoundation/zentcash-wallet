@@ -210,7 +210,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",
         "@ledgerhq/hw-transport-node-hid": "^5.28.0",
-        "bulma": "^0.7.5",
+        "bulma": "^0.9.3",
         "bulma-extensions": "^6.2.7",
         "connected-react-router": "^6.3.2",
         "core-js": "2",
