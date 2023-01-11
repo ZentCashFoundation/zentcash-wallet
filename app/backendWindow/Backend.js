@@ -7,7 +7,7 @@ import {
     LogLevel,
     prettyPrintAmount,
     WalletErrorCode
-} from "turtlecoin-wallet-backend";
+} from "zentcash-wallet-backend";
 import log from "electron-log";
 import { ipcRenderer } from "electron";
 import { createObjectCsvWriter } from "csv-writer";

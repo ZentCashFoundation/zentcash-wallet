@@ -3,7 +3,7 @@
 // Please see the included LICENSE file for more information.
 import request from "request-promise";
 import log from "electron-log";
-import { DaemonConnection } from "turtlecoin-wallet-backend";
+import { DaemonConnection } from "zentcash-wallet-backend";
 import { config, eventEmitter } from "../index";
 import { roundToNearestHundredth } from "../utils/utils";
 import Configure from "../../configure";

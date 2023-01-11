@@ -10,7 +10,7 @@ import Configure from "../../configure";
 import {
     createIntegratedAddress,
     validatePaymentID
-} from "turtlecoin-wallet-backend";
+} from "zentcash-wallet-backend";
 import { session, il8n, loginCounter, config } from "../index";
 import NavBar from "./NavBar";
 import BottomBar from "./BottomBar";

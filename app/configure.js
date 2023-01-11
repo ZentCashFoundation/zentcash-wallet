@@ -4,7 +4,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-import { MixinLimit, MixinLimits, Daemon } from "turtlecoin-wallet-backend";
+import { MixinLimit, MixinLimits, Daemon } from "zentcash-wallet-backend";
 import { name, version } from "../package.json";
 
 const configure = {
