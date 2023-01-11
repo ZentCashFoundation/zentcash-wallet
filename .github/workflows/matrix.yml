@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-18.04, windows-2019, macOS-10.15]
     steps:
       - uses: actions/checkout@v1
 
@@ -21,11 +21,11 @@ jobs:
           node-version: '14.x'
 
       - name: Install native dependencies
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-18.04'
         run: sudo apt-get update; sudo apt-get install libusb-1.0-0-dev libudev-dev
 
       - name: Setup MSBuild.exe
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         uses: microsoft/setup-msbuild@v1
 
       - name: Setup Cache
@@ -76,7 +76,7 @@ jobs:
           path: ./release/${{ steps.before_deploy.outputs.file_name }}
 
       - name: Store Additional Build Artifact
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-18.04'
         uses: actions/upload-artifact@v1
         with:
           name: ${{ steps.before_deploy.outputs.deb_name }}
