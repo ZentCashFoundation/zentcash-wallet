@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import { remote, shell } from "electron";
 import log from "electron-log";
-import { WalletBackend, Daemon } from "turtlecoin-wallet-backend";
+import { WalletBackend, Daemon } from "zentcash-wallet-backend";
 import NavBar from "./NavBar";
 import BottomBar from "./BottomBar";
 import Redirector from "./Redirector";
